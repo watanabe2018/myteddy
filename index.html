@@ -17,101 +17,73 @@
 <!-- ヘッダー -->
 <header class="app-header">
   <h1>🧸 <span id="bear-name-header">ぽんた</span>のおへや</h1>
-  <div class="save-badge" id="save-badge">じどうほぞん ✓ <span id="save-time"></span></div>
+  <div class="header-right">
+    <div class="star-counter" id="star-counter">⭐ <span id="star-count">0</span></div>
+    <button class="scene-map-btn" id="scene-map-btn" onclick="openSceneModal()">🗺️</button>
+    <div class="save-badge">✓ <span id="save-time"></span></div>
+  </div>
 </header>
 
 <!-- タブコンテンツ -->
 <main class="tab-content">
 
-  <!-- ===== おへや（メイン） ===== -->
+  <!-- ===== おへや ===== -->
   <section id="tab-home" class="tab-panel active">
 
-    <!-- シーン -->
-    <div class="scene" id="scene">
-      <!-- 吹き出し -->
+    <div class="scene s-room" id="scene">
+      <div id="time-overlay" class="time-overlay"></div>
+      <div id="scene-decor" class="scene-decor"></div>
+      <div id="collectibles" class="collectibles"></div>
+
       <div class="speech-bubble" id="speech-bubble">
         <span id="speech-text">あそぼ〜！</span>
       </div>
 
-      <!-- テディベアSVG -->
-      <div class="bear-wrapper" id="bear-wrapper">
-        <svg id="bear-svg" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" width="180" height="198">
-          <!-- 服レイヤー（後ろ） -->
-          <g id="outfit-back"></g>
-
-          <!-- 体 -->
-          <ellipse cx="100" cy="155" rx="52" ry="48" fill="#C8885A"/>
-          <!-- おなか -->
-          <ellipse cx="100" cy="160" rx="30" ry="28" fill="#E5AC7A"/>
-
-          <!-- 耳 -->
-          <circle cx="55" cy="72" r="20" fill="#C8885A"/>
-          <circle cx="55" cy="72" r="12" fill="#E5AC7A"/>
-          <circle cx="145" cy="72" r="20" fill="#C8885A"/>
-          <circle cx="145" cy="72" r="12" fill="#E5AC7A"/>
-
-          <!-- 頭 -->
-          <circle cx="100" cy="95" r="48" fill="#C8885A"/>
-          <!-- 顔の薄い部分 -->
-          <ellipse cx="100" cy="108" rx="28" ry="22" fill="#E5AC7A"/>
-
-          <!-- 目 -->
-          <g id="bear-eyes">
-            <circle cx="84" cy="88" r="7" fill="#3E2000"/>
-            <circle cx="116" cy="88" r="7" fill="#3E2000"/>
-            <circle cx="86" cy="86" r="2.5" fill="white"/>
-            <circle cx="118" cy="86" r="2.5" fill="white"/>
-          </g>
-
-          <!-- 鼻 -->
-          <ellipse id="bear-nose" cx="100" cy="103" rx="7" ry="5" fill="#3E2000"/>
-
-          <!-- 口（通常） -->
-          <g id="bear-mouth-normal">
-            <path d="M93 110 Q100 117 107 110" stroke="#3E2000" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          </g>
-          <!-- 口（笑顔） -->
-          <g id="bear-mouth-happy" style="display:none">
-            <path d="M88 109 Q100 122 112 109" stroke="#3E2000" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <!-- ほっぺ -->
-            <ellipse cx="78" cy="108" rx="10" ry="7" fill="#FF9999" opacity="0.5"/>
-            <ellipse cx="122" cy="108" rx="10" ry="7" fill="#FF9999" opacity="0.5"/>
-          </g>
-
-          <!-- 腕 -->
-          <ellipse cx="55" cy="148" rx="14" ry="30" fill="#C8885A" transform="rotate(-20 55 148)"/>
-          <ellipse cx="145" cy="148" rx="14" ry="30" fill="#C8885A" transform="rotate(20 145 148)"/>
-
-          <!-- 足 -->
-          <ellipse cx="80" cy="200" rx="18" ry="12" fill="#C8885A"/>
-          <ellipse cx="120" cy="200" rx="18" ry="12" fill="#C8885A"/>
-
-          <!-- 服レイヤー（前） -->
-          <g id="outfit-front"></g>
-
-          <!-- ハートエフェクト -->
-          <g id="heart-effects"></g>
-        </svg>
+      <!-- くまスケールラッパー（成長段階用） -->
+      <div id="bear-outer" class="bear-outer">
+        <div class="bear-wrapper" id="bear-wrapper">
+          <svg id="bear-svg" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" width="180" height="198">
+            <g id="outfit-back"></g>
+            <ellipse cx="100" cy="155" rx="52" ry="48" fill="#C8885A"/>
+            <ellipse cx="100" cy="160" rx="30" ry="28" fill="#E5AC7A"/>
+            <circle cx="55" cy="72" r="20" fill="#C8885A"/>
+            <circle cx="55" cy="72" r="12" fill="#E5AC7A"/>
+            <circle cx="145" cy="72" r="20" fill="#C8885A"/>
+            <circle cx="145" cy="72" r="12" fill="#E5AC7A"/>
+            <circle cx="100" cy="95" r="48" fill="#C8885A"/>
+            <ellipse cx="100" cy="108" rx="28" ry="22" fill="#E5AC7A"/>
+            <g id="bear-eyes">
+              <circle cx="84" cy="88" r="7" fill="#3E2000"/>
+              <circle cx="116" cy="88" r="7" fill="#3E2000"/>
+              <circle cx="86" cy="86" r="2.5" fill="white"/>
+              <circle cx="118" cy="86" r="2.5" fill="white"/>
+            </g>
+            <ellipse id="bear-nose" cx="100" cy="103" rx="7" ry="5" fill="#3E2000"/>
+            <g id="bear-mouth">
+              <path id="bear-mouth-path" d="M93 110 Q100 117 107 110" stroke="#3E2000" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            </g>
+            <ellipse id="cheek-l" cx="78" cy="108" rx="10" ry="7" fill="#FF9999" opacity="0"/>
+            <ellipse id="cheek-r" cx="122" cy="108" rx="10" ry="7" fill="#FF9999" opacity="0"/>
+            <ellipse cx="55" cy="148" rx="14" ry="30" fill="#C8885A" transform="rotate(-20 55 148)"/>
+            <ellipse cx="145" cy="148" rx="14" ry="30" fill="#C8885A" transform="rotate(20 145 148)"/>
+            <ellipse cx="80" cy="200" rx="18" ry="12" fill="#C8885A"/>
+            <ellipse cx="120" cy="200" rx="18" ry="12" fill="#C8885A"/>
+            <g id="outfit-front"></g>
+            <g id="heart-effects"></g>
+          </svg>
+        </div>
       </div>
 
-      <!-- 手のSVG -->
+      <!-- 手 -->
       <div class="hand-wrapper" id="hand-wrapper">
         <svg id="hand-svg" viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg" width="110" height="147">
-          <!-- 腕 -->
           <rect x="38" y="90" width="44" height="70" rx="22" fill="#F5C5A3" id="hand-arm"/>
-          <!-- 手のひら -->
           <ellipse cx="60" cy="92" rx="32" ry="30" fill="#F5C5A3" id="hand-palm"/>
-          <!-- 親指 -->
           <ellipse cx="20" cy="88" rx="11" ry="16" fill="#F5C5A3" transform="rotate(-30 20 88)" id="finger-thumb"/>
-          <!-- 人差し指 -->
           <rect x="28" y="48" width="14" height="42" rx="7" fill="#F5C5A3" id="finger-1"/>
-          <!-- 中指 -->
           <rect x="46" y="42" width="14" height="48" rx="7" fill="#F5C5A3" id="finger-2"/>
-          <!-- 薬指 -->
           <rect x="64" y="46" width="13" height="44" rx="6.5" fill="#F5C5A3" id="finger-3"/>
-          <!-- 小指 -->
           <rect x="80" y="56" width="12" height="36" rx="6" fill="#F5C5A3" id="finger-4"/>
-          <!-- 爪のハイライト -->
           <rect x="30" y="50" width="10" height="8" rx="5" fill="#FFD4B8" opacity="0.6"/>
           <rect x="48" y="44" width="10" height="8" rx="5" fill="#FFD4B8" opacity="0.6"/>
           <rect x="66" y="48" width="9" height="8" rx="4.5" fill="#FFD4B8" opacity="0.6"/>
@@ -120,59 +92,45 @@
       </div>
     </div>
 
-    <!-- きもちゲージ -->
+    <!-- ゲージ -->
     <div class="gauges">
       <div class="gauge-row">
         <span class="gauge-icon" id="icon-food">🍯</span>
-        <div class="gauge-bar-wrap">
-          <div class="gauge-bar food" id="gauge-food" style="width:75%"></div>
-        </div>
+        <div class="gauge-bar-wrap"><div class="gauge-bar food" id="gauge-food" style="width:75%"></div></div>
       </div>
       <div class="gauge-row">
         <span class="gauge-icon" id="icon-clean">🛁</span>
-        <div class="gauge-bar-wrap">
-          <div class="gauge-bar clean" id="gauge-clean" style="width:50%"></div>
-        </div>
+        <div class="gauge-bar-wrap"><div class="gauge-bar clean" id="gauge-clean" style="width:50%"></div></div>
       </div>
       <div class="gauge-row">
         <span class="gauge-icon" id="icon-sleep">💤</span>
-        <div class="gauge-bar-wrap">
-          <div class="gauge-bar sleep" id="gauge-sleep" style="width:70%"></div>
-        </div>
+        <div class="gauge-bar-wrap"><div class="gauge-bar sleep" id="gauge-sleep" style="width:70%"></div></div>
       </div>
       <div class="gauge-row">
         <span class="gauge-icon" id="icon-happy">💖</span>
-        <div class="gauge-bar-wrap">
-          <div class="gauge-bar happy" id="gauge-happy" style="width:90%"></div>
-        </div>
+        <div class="gauge-bar-wrap"><div class="gauge-bar happy" id="gauge-happy" style="width:90%"></div></div>
       </div>
     </div>
 
     <!-- アクションボタン -->
     <div class="actions">
-      <button class="action-btn" data-action="food" onclick="doAction('food')">
-        <span class="btn-icon">🍯</span>
-        <span class="btn-label">ごはん</span>
+      <button class="action-btn" onclick="startMinigame('food')">
+        <span class="btn-icon">🍯</span><span class="btn-label">ごはん</span>
       </button>
-      <button class="action-btn" data-action="clean" onclick="doAction('clean')">
-        <span class="btn-icon">🛁</span>
-        <span class="btn-label">おふろ</span>
+      <button class="action-btn" onclick="startMinigame('clean')">
+        <span class="btn-icon">🛁</span><span class="btn-label">おふろ</span>
       </button>
-      <button class="action-btn" data-action="sleep" onclick="doAction('sleep')">
-        <span class="btn-icon">💤</span>
-        <span class="btn-label">おやすみ</span>
+      <button class="action-btn" onclick="startMinigame('sleep')">
+        <span class="btn-icon">💤</span><span class="btn-label">おやすみ</span>
       </button>
-      <button class="action-btn" data-action="outfit" onclick="switchTab('outfit')">
-        <span class="btn-icon">🎀</span>
-        <span class="btn-label">おしゃれ</span>
+      <button class="action-btn" onclick="switchTab('outfit')">
+        <span class="btn-icon">🎀</span><span class="btn-label">おしゃれ</span>
       </button>
-      <button class="action-btn" data-action="play" onclick="doAction('play')">
-        <span class="btn-icon">🎵</span>
-        <span class="btn-label">あそぶ</span>
+      <button class="action-btn" onclick="startMinigame('play')">
+        <span class="btn-icon">🎵</span><span class="btn-label">あそぶ</span>
       </button>
-      <button class="action-btn" data-action="medicine" onclick="doAction('medicine')">
-        <span class="btn-icon">🩹</span>
-        <span class="btn-label">おくすり</span>
+      <button class="action-btn" onclick="startMinigame('medicine')">
+        <span class="btn-icon">🩹</span><span class="btn-label">おくすり</span>
       </button>
     </div>
 
@@ -182,7 +140,6 @@
   <section id="tab-outfit" class="tab-panel">
     <h2 class="section-title">🎀 きがえ</h2>
     <div class="outfit-preview">
-      <!-- プレビュー用ミニベア（メインと同じSVGを小さく） -->
       <svg id="outfit-preview-svg" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" width="140" height="154">
         <g id="outfit-back-preview"></g>
         <ellipse cx="100" cy="155" rx="52" ry="48" fill="#C8885A"/>
@@ -206,22 +163,45 @@
         <g id="outfit-front-preview"></g>
       </svg>
     </div>
-    <div class="outfit-grid" id="outfit-grid">
-      <!-- JSで生成 -->
-    </div>
+    <div class="outfit-grid" id="outfit-grid"></div>
   </section>
 
-  <!-- ===== にっき ===== -->
+  <!-- ===== にっき・ずかん ===== -->
   <section id="tab-diary" class="tab-panel">
-    <h2 class="section-title">📖 にっき</h2>
-    <div class="diary-list" id="diary-list">
-      <!-- JSで生成 -->
+    <div class="subtabs">
+      <button class="subtab-btn active" id="subtab-diary" onclick="switchSubtab('diary')">📖 にっき</button>
+      <button class="subtab-btn" id="subtab-collection" onclick="switchSubtab('collection')">🗃️ ずかん</button>
+    </div>
+    <div id="subpanel-diary">
+      <div class="diary-list" id="diary-list"></div>
+    </div>
+    <div id="subpanel-collection" style="display:none">
+      <div id="collection-grid" class="collection-grid"></div>
     </div>
   </section>
 
   <!-- ===== せってい ===== -->
   <section id="tab-settings" class="tab-panel">
     <h2 class="section-title">⚙️ せってい</h2>
+
+    <div class="setting-card">
+      <label class="setting-label">くまのせいちょう</label>
+      <div class="growth-display">
+        <span id="growth-icon">🐣</span>
+        <div>
+          <div class="growth-name" id="growth-name">あかちゃん</div>
+          <div class="growth-sub" id="growth-sub">⭐ 30こでつぎのだんかいへ</div>
+        </div>
+      </div>
+      <div class="growth-bar-wrap">
+        <div class="growth-bar-fill" id="growth-bar-fill"></div>
+      </div>
+    </div>
+
+    <div class="setting-card">
+      <label class="setting-label">ログインきろく</label>
+      <div class="streak-display">🔥 <span id="login-streak">0</span> にちれんぞく！</div>
+    </div>
 
     <div class="setting-card">
       <label class="setting-label">くまのなまえ</label>
@@ -231,7 +211,7 @@
 
     <div class="setting-card">
       <label class="setting-label">てのいろ</label>
-      <div class="skin-swatches" id="skin-swatches">
+      <div class="skin-swatches">
         <button class="swatch" data-skin="#FDDBB4" style="background:#FDDBB4" onclick="setSkin('#FDDBB4')"></button>
         <button class="swatch" data-skin="#F5C5A3" style="background:#F5C5A3" onclick="setSkin('#F5C5A3')"></button>
         <button class="swatch" data-skin="#D4956A" style="background:#D4956A" onclick="setSkin('#D4956A')"></button>
@@ -246,29 +226,54 @@
 
 </main>
 
-<!-- ボトムタブバー -->
+<!-- ボトムタブ -->
 <nav class="bottom-nav">
   <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
-    <span class="nav-icon">🏠</span>
-    <span class="nav-label">おへや</span>
+    <span class="nav-icon">🏠</span><span class="nav-label">おへや</span>
   </button>
   <button class="nav-btn" id="nav-outfit" onclick="switchTab('outfit')">
-    <span class="nav-icon">🎀</span>
-    <span class="nav-label">きがえ</span>
+    <span class="nav-icon">🎀</span><span class="nav-label">きがえ</span>
   </button>
   <button class="nav-btn" id="nav-diary" onclick="switchTab('diary')">
-    <span class="nav-icon">📖</span>
-    <span class="nav-label">にっき</span>
+    <span class="nav-icon">📖</span><span class="nav-label">にっき</span>
   </button>
   <button class="nav-btn" id="nav-settings" onclick="switchTab('settings')">
-    <span class="nav-icon">⚙️</span>
-    <span class="nav-label">せってい</span>
+    <span class="nav-icon">⚙️</span><span class="nav-label">せってい</span>
   </button>
 </nav>
 
-<!-- トースト通知 -->
+<!-- シーン選択モーダル -->
+<div id="scene-modal" class="modal-overlay hidden" onclick="closeSceneModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <h3 class="modal-title">🗺️ どこにいく？</h3>
+    <div id="scene-list" class="scene-list"></div>
+    <button class="modal-close-btn" onclick="closeSceneModal()">とじる</button>
+  </div>
+</div>
+
+<!-- ミニゲームオーバーレイ -->
+<div id="mg-overlay" class="mg-overlay hidden">
+  <div class="mg-topbar">
+    <div class="mg-title" id="mg-title">ごはん</div>
+    <button class="mg-skip-btn" id="mg-skip-btn">スキップ</button>
+  </div>
+  <div class="mg-timer-wrap">
+    <div class="mg-timer-bar" id="mg-timer-bar"></div>
+  </div>
+  <div class="mg-stage" id="mg-stage"></div>
+  <div class="mg-hint" id="mg-hint"></div>
+</div>
+
+<!-- シーン切り替えフラッシュ -->
+<div id="scene-flash" class="scene-flash hidden"></div>
+
+<!-- 紙吹雪コンテナ -->
+<div id="confetti-container" class="confetti-container"></div>
+
+<!-- トースト -->
 <div class="toast" id="toast"></div>
 
 <script src="./js/app.js"></script>
+<script src="./js/minigames.js"></script>
 </body>
 </html>
